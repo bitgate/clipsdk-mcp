@@ -8,11 +8,97 @@ Let your coding agent cut a long video into its best short clips. A podcast, int
 > make square clips with karaoke captions from ~/Movies/keynote.mov
 ```
 
-The agent calls `create_clips`, a local file is uploaded, clipsdk transcribes the video, picks the moments that stand on their own, follows the speaker and renders each clip, and the clips are saved in `./clipsdk-output/<video>/`.
+The agent calls `create_clips`, clipsdk transcribes the video, picks the moments that stand on their own, follows the speaker and renders each clip, and the agent gets the clips back.
 
-## Setup
+Connect it two ways, both with a clipsdk API key (`csdk_live_...`) from [clipsdk.com/dashboard/keys](https://clipsdk.com/dashboard/keys):
 
-You need Node 20+ and a clipsdk API key (`csdk_live_...`) from [clipsdk.com/dashboard/keys](https://clipsdk.com/dashboard/keys).
+- **Hosted**: `https://mcp.clipsdk.com/mcp`. Nothing to install. The clips come back as links.
+- **Local**: this package over stdio, with Node 20+. It uploads local files itself and saves the clips in `./clipsdk-output/<video>/`.
+
+## Hosted server
+
+`https://mcp.clipsdk.com/mcp` speaks Streamable HTTP and takes your key as a Bearer header. It has no OAuth sign-in, so it works in clients where you can set a header, not as a claude.ai or ChatGPT connector.
+
+### Claude Code
+
+```bash
+claude mcp add --transport http clipsdk https://mcp.clipsdk.com/mcp --header "Authorization: Bearer csdk_live_xxx"
+```
+
+### Cursor
+
+`~/.cursor/mcp.json` (or `.cursor/mcp.json` in your project):
+
+```json
+{
+  "mcpServers": {
+    "clipsdk": {
+      "url": "https://mcp.clipsdk.com/mcp",
+      "headers": { "Authorization": "Bearer csdk_live_xxx" }
+    }
+  }
+}
+```
+
+### VS Code
+
+`.vscode/mcp.json` (asks for the key once and stores it encrypted):
+
+```json
+{
+  "inputs": [{ "type": "promptString", "id": "clipsdk-key", "description": "clipsdk API key", "password": true }],
+  "servers": {
+    "clipsdk": {
+      "type": "http",
+      "url": "https://mcp.clipsdk.com/mcp",
+      "headers": { "Authorization": "Bearer ${input:clipsdk-key}" }
+    }
+  }
+}
+```
+
+### Windsurf
+
+Open MCP config file in Cascade's MCP menu and add:
+
+```json
+{
+  "mcpServers": {
+    "clipsdk": {
+      "serverUrl": "https://mcp.clipsdk.com/mcp",
+      "headers": { "Authorization": "Bearer csdk_live_xxx" }
+    }
+  }
+}
+```
+
+### Codex
+
+`~/.codex/config.toml`, with `CLIPSDK_KEY` set in your environment:
+
+```toml
+[mcp_servers.clipsdk]
+url = "https://mcp.clipsdk.com/mcp"
+bearer_token_env_var = "CLIPSDK_KEY"
+```
+
+### Gemini CLI
+
+```bash
+gemini mcp add --transport http --header "Authorization: Bearer csdk_live_xxx" clipsdk https://mcp.clipsdk.com/mcp
+```
+
+### Hosted tools
+
+| Tool | What it does |
+| --- | --- |
+| `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
+| `get_job` | Waits on a job by `job_id` (and `wait_s`) and returns its clips, or why it failed. |
+| `create_upload` | Takes the file's name or local path as `filename` and its exact `size` in bytes, and returns a `video_url` plus the `curl` command that uploads the file straight to storage. A path with characters a shell could misread comes back as `YOUR_FILE` in that command, for the agent to fill in. |
+
+Clip links work for 7 days and need no key. Same pricing and limits as the local server.
+
+## Local server
 
 ### Claude Code
 
@@ -87,7 +173,7 @@ curl -fsSL https://raw.githubusercontent.com/bitgate/clipsdk-mcp/master/skills/c
 
 Then ask for clips, or type `/clipsdk ./episode-42.mp4`. Put it in `.claude/skills/clipsdk/` in a repo to share it with your team.
 
-## Tools
+## Local tools
 
 | Tool | What it does |
 | --- | --- |
