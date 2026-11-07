@@ -74,12 +74,7 @@ Open MCP config file in Cascade's MCP menu and add:
 
 ### Codex
 
-```bash
-export CLIPSDK_KEY=csdk_live_xxx
-codex mcp add clipsdk --url https://mcp.clipsdk.com/mcp --bearer-token-env-var CLIPSDK_KEY
-```
-
-Or in `~/.codex/config.toml`, with `CLIPSDK_KEY` set in your environment:
+`~/.codex/config.toml`, with `CLIPSDK_KEY` set in your environment:
 
 ```toml
 [mcp_servers.clipsdk]
@@ -99,7 +94,7 @@ gemini mcp add --transport http --header "Authorization: Bearer csdk_live_xxx" c
 | --- | --- |
 | `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
 | `get_job` | Waits on a job by `job_id` (and `wait_s`) and returns its clips, or why it failed. |
-| `create_upload` | Takes a local file's path as `filename` and its `size` in bytes, and returns a `video_url` plus the `curl` command that uploads the file straight to storage. |
+| `create_upload` | Takes the file's name or local path as `filename` and its exact `size` in bytes, and returns a `video_url` plus the `curl` command that uploads the file straight to storage. A path with characters a shell could misread comes back as `YOUR_FILE` in that command, for the agent to fill in. |
 
 Clip links work for 7 days and need no key. Same pricing and limits as the local server.
 
