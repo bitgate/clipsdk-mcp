@@ -76,6 +76,17 @@ Settings → Developer → Edit Config (`claude_desktop_config.json`). Desktop h
 
 Settings → Cascade → MCP Servers → View raw config, then add the same `mcpServers` entry as Cursor.
 
+### Claude Code skill
+
+The skill in [`skills/clipsdk/SKILL.md`](skills/clipsdk/SKILL.md) tells Claude when to reach for clipsdk and how to turn "3 square clips about pricing" into tool arguments:
+
+```bash
+mkdir -p ~/.claude/skills/clipsdk
+curl -fsSL https://raw.githubusercontent.com/bitgate/clipsdk-mcp/master/skills/clipsdk/SKILL.md -o ~/.claude/skills/clipsdk/SKILL.md
+```
+
+Then ask for clips, or type `/clipsdk ./episode-42.mp4`. Put it in `.claude/skills/clipsdk/` in a repo to share it with your team.
+
 ## Tools
 
 | Tool | What it does |
