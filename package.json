@@ -1,0 +1,53 @@
+{
+  "name": "clipsdk-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for clipsdk: turn long videos into captioned, speaker-framed short clips from your coding agent, with the clips saved to your disk.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "clipsdk-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitgate/clipsdk-mcp.git"
+  },
+  "homepage": "https://clipsdk.com",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "video",
+    "clips",
+    "video-clipping",
+    "shorts",
+    "reels",
+    "tiktok",
+    "captions",
+    "podcast",
+    "repurposing",
+    "claude-code",
+    "cursor"
+  ],
+  "scripts": {
+    "bundle": "node scripts/bundle.mjs",
+    "bundle:check": "node scripts/bundle.mjs --check",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@types/node": "^20.19.43",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.12",
+    "zod": "^4.6.7"
+  },
+  "overrides": {
+    "vite": "^7.3.7"
+  }
+}

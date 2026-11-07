@@ -1,0 +1,4 @@
+node_modules/
+clipsdk-output/
+*.tgz
+.DS_Store
