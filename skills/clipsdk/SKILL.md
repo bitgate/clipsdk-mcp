@@ -1,6 +1,6 @@
 ---
 name: clipsdk
-description: Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips with burned-in captions, using the clipsdk MCP tools. Use when the user asks for clips, shorts, reels, TikToks or highlights from a video file, a YouTube or TikTok link, or a direct link to a video file.
+description: Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips with burned-in captions, using the clipsdk MCP tools. Use when the user asks for clips, shorts, reels, TikToks or highlights from a video file, a video link (YouTube, TikTok, Twitch and more), or a direct link to a video file.
 license: MIT
 compatibility: Needs the clipsdk MCP server, hosted (https://mcp.clipsdk.com/mcp with the key as a Bearer header) or local (npx -y github:bitgate/clipsdk-mcp, Node 20+, CLIPSDK_KEY set). Without it, falls back to the clipsdk HTTP API.
 allowed-tools: mcp__clipsdk__create_clips mcp__clipsdk__get_job mcp__clipsdk__upload_file mcp__clipsdk__create_upload
@@ -12,7 +12,7 @@ Turn one long video into ranked short clips with the `clipsdk` MCP tools: `creat
 
 ## Steps
 
-1. Get the video: a local file path, a YouTube or TikTok video link, or a direct https link to the file (MP4, MOV, WebM or MKV, up to 3 hours and 5 GB). Twitch, Vimeo and other page links fail. If the user gives one, ask for the file or a direct file link instead. On the hosted server, a local file goes through `create_upload` first: run the `curl` command it returns, then pass its `video_url`.
+1. Get the video: a local file path, a link to one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or a direct https link to the file (MP4, MOV, WebM or MKV, up to 3 hours and 5 GB). Vimeo, Instagram and other page links fail. If the user gives one, ask for the file or a direct file link instead. On the hosted server, a local file goes through `create_upload` first: run the `curl` command it returns, then pass its `video_url`.
 2. Turn the request into `create_clips` arguments. Set only what the user asked for; the defaults are good.
 
    | The user says | Argument |

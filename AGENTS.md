@@ -9,7 +9,7 @@ Local stdio MCP server that wraps the clipsdk clipping API. The API contract liv
 - `src/tools.ts`: the three tools; names, descriptions and parameter docs are what agents read to pick a tool
 - `src/api.ts`: HTTP client: `POST /v1/clips` with one Idempotency-Key per call (so repeats are safe), `GET /v1/jobs/{id}`, upload tickets and the presigned PUT, capped answers, and downloads from the API's own `/f/` links only
 - `src/jobs.ts`: create job, long-poll, save each job's clips into a folder of its own without overwriting
-- `src/media.ts`: local path or link to a `video_url`, link checks (page links, private hosts), upload checks (network paths, hidden files, 5 GB, container), background uploads shared between calls, the upload cache
+- `src/media.ts`: local path or link to a `video_url`, link checks (private hosts, ports, logins), upload checks (network paths, hidden files, 5 GB, container), background uploads shared between calls, the upload cache
 - `src/paths.ts`: network and device names, link walks, exclusive saves that stay inside a folder
 - `src/sniff.ts`: tells MP4, MOV, WebM and MKV apart from everything else by their first bytes
 - `src/results.ts`: tool results and a hint for every API and job error code

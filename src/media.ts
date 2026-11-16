@@ -24,21 +24,8 @@ const KEPT_MS = 7 * 24 * 60 * 60 * 1000;
 const REUSE_MARGIN_MS = 24 * 60 * 60 * 1000;
 const PROGRESS_EVERY_MS = 5000;
 
-// A page on these sites is a player, not the video; clipsdk refuses them unless the path names a video file
-const PAGE_SITES = new Map<string, string>([
-  ["instagram.com", "Instagram"],
-  ["vimeo.com", "Vimeo"],
-  ["x.com", "X"],
-  ["twitter.com", "X"],
-  ["facebook.com", "Facebook"],
-  ["fb.watch", "Facebook"],
-  ["twitch.tv", "Twitch"],
-  ["rumble.com", "Rumble"],
-  ["dailymotion.com", "Dailymotion"],
-  ["dai.ly", "Dailymotion"],
-  ["loom.com", "Loom"],
-]);
-const MEDIA_PATH = /\.(mp4|m4v|mov|webm|mkv|avi|mpe?g)$/i;
+// The sites clipsdk fetches one video from, as its API names them
+export const LINK_SITES = "YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn";
 
 export interface LocalFile {
   path: string;
@@ -246,7 +233,7 @@ function hiddenFile(filePath: string): ToolError {
   return new ToolError(`${filePath} is hidden or inside a hidden folder, and those are never uploaded.`);
 }
 
-// clipsdk fetches a file, or a YouTube or TikTok video, over the internet: another site's page, a private host, another port or a
+// clipsdk fetches the link over the internet and says itself when it's a page it can't read; a private host, another port or a
 // user:pass@ never works
 function videoLink(value: string): string {
   if (!URL.canParse(value)) throw new ToolError(`"${value}" is not a valid URL.`);
@@ -256,23 +243,7 @@ function videoLink(value: string): string {
   if (url.username || url.password) throw new ToolError(`clipsdk doesn't take links with a user name or password in them. ${local}`);
   if (PRIVATE_HOST.test(url.hostname)) throw new ToolError(`clipsdk downloads links over the internet and can't reach ${url.hostname}. ${local}`);
   if (url.port) throw new ToolError(`clipsdk only fetches links on the scheme's own port, and ${url.host} isn't. ${local}`);
-
-  const site = pageSite(url);
-  if (site) {
-    throw new ToolError(`${site} links are web pages, not video files, and clipsdk doesn't download them. Pass a direct link to the video file, or the local file path (it gets uploaded).`);
-  }
   return value;
-}
-
-function pageSite({ hostname, pathname }: URL): string | undefined {
-  if (MEDIA_PATH.test(pathname)) return undefined;
-
-  const labels = hostname.toLowerCase().split(".");
-  for (let i = 0; i < labels.length - 1; i++) {
-    const site = PAGE_SITES.get(labels.slice(i).join("."));
-    if (site) return site;
-  }
-  return undefined;
 }
 
 export function megabytes(bytes: number): string {
