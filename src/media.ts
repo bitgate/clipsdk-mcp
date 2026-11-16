@@ -26,10 +26,6 @@ const PROGRESS_EVERY_MS = 5000;
 
 // A page on these sites is a player, not the video; clipsdk refuses them unless the path names a video file
 const PAGE_SITES = new Map<string, string>([
-  ["youtube.com", "YouTube"],
-  ["youtu.be", "YouTube"],
-  ["youtube-nocookie.com", "YouTube"],
-  ["tiktok.com", "TikTok"],
   ["instagram.com", "Instagram"],
   ["vimeo.com", "Vimeo"],
   ["x.com", "X"],
@@ -250,7 +246,8 @@ function hiddenFile(filePath: string): ToolError {
   return new ToolError(`${filePath} is hidden or inside a hidden folder, and those are never uploaded.`);
 }
 
-// clipsdk fetches one file over the internet: a page link, a private host, another port or a user:pass@ never works
+// clipsdk fetches a file, or a YouTube or TikTok video, over the internet: another site's page, a private host, another port or a
+// user:pass@ never works
 function videoLink(value: string): string {
   if (!URL.canParse(value)) throw new ToolError(`"${value}" is not a valid URL.`);
 
