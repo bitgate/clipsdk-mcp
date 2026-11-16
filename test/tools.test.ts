@@ -419,15 +419,11 @@ describe("errors", () => {
     expect(api.requests).toHaveLength(0);
   });
 
-  it("refuses links clipsdk can't fetch, and lets direct file links through", async () => {
+  it("refuses links clipsdk can't reach, and leaves video site links to the API", async () => {
     const client = await connect();
     const refused: [string, string][] = [
       ["http://localhost:3000/talk.mp4", "can't reach localhost"],
       ["https://192.168.1.20/talk.mp4", "can't reach 192.168.1.20"],
-      ["https://www.youtube.com/watch?v=dQw4w9WgXcQ", "YouTube links are web pages"],
-      ["https://youtu.be/dQw4w9WgXcQ", "YouTube links are web pages"],
-      ["https://vimeo.com/76979871", "Vimeo links are web pages"],
-      ["https://www.tiktok.com/@someone/video/123", "TikTok links are web pages"],
       ["https://user:secret@example.com/talk.mp4", "user name or password"],
       ["https://example.com:8443/talk.mp4", "scheme's own port"],
       ["ftp://example.com/talk.mp4", "direct http(s) link"],
@@ -439,8 +435,18 @@ describe("errors", () => {
     }
     expect(api.requests).toEqual([]);
 
-    const direct = await call(client, "create_clips", { video: "https://player.vimeo.com/external/76979871.hd.mp4", save: false });
-    expect(direct.json.status).toBe("succeeded");
+    const fetched = [
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://youtu.be/dQw4w9WgXcQ",
+      "https://www.tiktok.com/@someone/video/123",
+      "https://www.twitch.tv/videos/1234567890",
+      "https://vimeo.com/76979871",
+      "https://player.vimeo.com/external/76979871.hd.mp4",
+    ];
+    for (const video of fetched) {
+      const outcome = await call(client, "create_clips", { video, save: false });
+      expect(outcome.json.status, video).toBe("succeeded");
+    }
   });
 
   it("retries server errors", async () => {

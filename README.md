@@ -92,7 +92,7 @@ gemini mcp add --transport http --header "Authorization: Bearer csdk_live_xxx" c
 
 | Tool | What it does |
 | --- | --- |
-| `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
+| `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a link to one video on a site clipsdk fetches (YouTube, TikTok, Twitch and more), a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
 | `get_job` | Waits on a job by `job_id` (and `wait_s`) and returns its clips, or why it failed. |
 | `create_upload` | Takes the file's name or local path as `filename` and its exact `size` in bytes, and returns a `video_url` plus the `curl` command that uploads the file straight to storage. A path with characters a shell could misread comes back as `YOUR_FILE` in that command, for the agent to fill in. |
 
@@ -185,7 +185,7 @@ Then ask for clips, or type `/clipsdk ./episode-42.mp4`. Put it in `.claude/skil
 
 | Parameter | Values | Default |
 | --- | --- | --- |
-| `video` | Required. A local file path, a direct http(s) link to the file, or a `video_url` from `upload_file`. | |
+| `video` | Required. A local file path, a link to one video on a site clipsdk fetches, a direct http(s) link to the file, or a `video_url` from `upload_file`. | |
 | `clips` | 1-20. Fewer come back when the video has fewer good moments. | `5` |
 | `min_seconds` | Shortest clip, 10-85 s. | `20` |
 | `max_seconds` | Longest clip, 15-90 s, at least `min_seconds` + 5. | `60` |
@@ -235,7 +235,7 @@ The project root is `CLAUDE_PROJECT_DIR` when Claude Code sets it, else the clie
 
 Sources up to 3 hours and 5 GB, as MP4, MOV, WebM or MKV with speech. Per account, shared by its keys: 3 jobs running at once, 200 jobs and 20 GB of uploads per UTC day; past a limit the tool says when to try again. Clips and uploads are kept 7 days.
 
-Links must point at the video file itself. YouTube, TikTok, Instagram, Vimeo, X, Facebook, Twitch, Rumble, Dailymotion and Loom page links are refused, and so are localhost and private addresses, non-default ports and links with a user name or password.
+A link is one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or points at the video file itself. clipsdk refuses other page links, like Vimeo and Instagram, and the local server refuses localhost and private addresses, non-default ports and links with a user name or password.
 
 A local file is only uploaded when it starts like an MP4, MOV, WebM or MKV video. Hidden files and folders, meaning names that start with a dot (`.env`, `~/.ssh`), and paths on another machine (`\\server\share`) are refused.
 

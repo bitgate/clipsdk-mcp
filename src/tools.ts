@@ -6,7 +6,7 @@ import * as z from "zod";
 import type { ToolContext } from "./context.js";
 import { safeName, type JobRunner } from "./jobs.js";
 import { log } from "./log.js";
-import { StillUploading, type Media } from "./media.js";
+import { LINK_SITES, StillUploading, type Media } from "./media.js";
 import { errorResult, textResult, ToolError, uploadingResult } from "./results.js";
 
 export interface Services {
@@ -41,13 +41,13 @@ export function registerTools(server: McpServer, services: () => Services, setti
       title: "Create clips",
       description: [
         "Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips, in the cloud: clipsdk transcribes it, picks the moments that stand on their own, reframes to the speaker, burns in captions and renders MP4s. Use it instead of cutting clips with local ffmpeg or whisper.",
-        "The video is a local path (uploaded automatically, up to 5 GB) or a direct http(s) link to the file: MP4, MOV, WebM or MKV with speech, up to 3 h. YouTube, TikTok, Vimeo and other page links don't work.",
+        `The video is a local path (uploaded automatically, up to 5 GB), a link to one video on ${LINK_SITES}, or a direct http(s) link to the file: MP4, MOV, WebM or MKV with speech, up to 3 h. Vimeo, Instagram and other page links don't work.`,
         "Costs $0.03 per source minute ($0.02 past 2,000 minutes in a month), or $0.03 per minute of delivered clips when that's more; sources above 1080p, above 60 fps or at a high bitrate cost at least $0.08 per clip minute. Billed per second; a failed job costs nothing.",
         `Takes minutes: rendering runs about 2x the clip length at 1080p30, four clips at a time, plus the analysis. ${saved} ${slow}`,
         "Per account: 3 jobs at once, 200 a day.",
       ].join(" "),
       inputSchema: {
-        video: z.string().min(1).describe("The long video: a local file path, a direct http(s) link to the file, or a video_url from upload_file."),
+        video: z.string().min(1).describe("The long video: a local file path, a link to one video on a site clipsdk fetches (YouTube, TikTok, Twitch and more), a direct http(s) link to the file, or a video_url from upload_file."),
         clips: z.number().int().min(1).max(20).optional().describe("How many clips, 1-20, default 5. Fewer come back when the video has fewer good moments."),
         min_seconds: z.number().int().min(10).max(MAX_CLIP_S).optional().describe(`Shortest clip in seconds, 10-90, default ${DEFAULT_MIN_S}.`),
         max_seconds: z.number().int().min(10).max(MAX_CLIP_S).optional().describe(`Longest clip in seconds, 10-90, default ${DEFAULT_MAX_S}; at least min_seconds + ${MIN_WINDOW_S}.`),

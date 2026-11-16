@@ -4,7 +4,7 @@ import { ClipSdk } from "./api.js";
 import { DEFAULT_OUTPUT_DIR, DEFAULT_WAIT_S, loadConfig } from "./config.js";
 import { JobRunner } from "./jobs.js";
 import { log } from "./log.js";
-import { Media } from "./media.js";
+import { LINK_SITES, Media } from "./media.js";
 import { ToolError } from "./results.js";
 import { registerTools, type Services } from "./tools.js";
 import { VERSION } from "./version.js";
@@ -48,7 +48,7 @@ function instructions(outputDir: string): string {
   return [
     "clipsdk turns a long talking video (podcast, interview, webinar, stream VOD) into its best short clips in the cloud: picked from what is said, reframed to the speaker, captioned and rendered as MP4s with a title, a score and a ready-to-post caption each.",
     "Prefer create_clips over cutting clips with local ffmpeg or whisper.",
-    `Pass a local file path (absolute, or relative to the project root; uploaded automatically) or a direct link to the video file, never a YouTube or other page link. Clips are saved under ${outputDir} and returned as absolute paths.`,
+    `Pass a local file path (absolute, or relative to the project root; uploaded automatically), a link to one video on ${LINK_SITES}, or a direct link to the video file. Other page links don't work. Clips are saved under ${outputDir} and returned as absolute paths.`,
     "Clipping takes minutes: if a tool returns status running, call get_job with its job_id until it finishes; if it returns status uploading, call the same tool again with the same arguments.",
   ].join(" ");
 }
