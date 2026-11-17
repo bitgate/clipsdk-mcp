@@ -20,7 +20,7 @@ const HINTS: Record<string, string> = {
   IDEMPOTENCY_CONFLICT: "clipsdk is still working on an earlier attempt of this request. Wait a minute, then try again.",
   INPUT_FETCH_FAILED: "clipsdk couldn't download the video. Pass a direct, public link to the file itself (not a page that plays it), or the local file path so it gets uploaded.",
   INPUT_UNSUPPORTED: "clipsdk couldn't read the video. Re-encode it as H.264/AAC MP4 (ffmpeg -i in.mov -c:v libx264 -c:a aac out.mp4) and try again.",
-  INPUT_TOO_LONG: "Videos can be up to 3 hours. Cut it into parts first (ffmpeg -i in.mp4 -t 3:00:00 -c copy part1.mp4) and clip each part.",
+  INPUT_TOO_LONG: "Videos can be up to 48 hours, and the clips come from the first 3. Cut it into 3 hour parts first (ffmpeg -i in.mp4 -ss 3:00:00 -t 3:00:00 -c copy part2.mp4) and clip each part.",
   INPUT_TOO_SHORT: "The video is shorter than min_seconds. Lower min_seconds (10 at least) or use a longer video.",
   INPUT_TOO_LARGE: "The message says what's too big: over 5 GB, or too heavy to render clips this long, with the max_seconds that fits. Lower max_seconds, or re-encode the video smaller.",
   INPUT_CHANGED: "The file behind the link changed while clipsdk was reading it. Pass the local file path (it gets uploaded) or try again once the link is stable.",

@@ -12,7 +12,7 @@ Turn one long video into ranked short clips with the `clipsdk` MCP tools: `creat
 
 ## Steps
 
-1. Get the video: a local file path, a link to one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or a direct https link to the file (MP4, MOV, WebM or MKV, up to 3 hours and 5 GB). Vimeo, Instagram and other page links fail. If the user gives one, ask for the file or a direct file link instead. On the hosted server, a local file goes through `create_upload` first: run the `curl` command it returns, then pass its `video_url`.
+1. Get the video: a local file path, a link to one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or a direct https link to the file (MP4, MOV, WebM or MKV, up to 48 hours and 5 GB; past 3 hours, the clips come from the first 3). Vimeo, Instagram and other page links fail. If the user gives one, ask for the file or a direct file link instead. On the hosted server, a local file goes through `create_upload` first: run the `curl` command it returns, then pass its `video_url`.
 2. Turn the request into `create_clips` arguments. Set only what the user asked for; the defaults are good.
 
    | The user says | Argument |
