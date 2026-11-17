@@ -17,21 +17,21 @@ const RETRY = "It's safe to call create_clips again, and a failed job costs noth
 const HINTS: Record<string, string> = {
   INVALID_REQUEST: "Fix the fields listed above and call the tool again.",
   UNAUTHORIZED: `The API key was rejected. Check CLIPSDK_KEY in this MCP server's config (csdk_live_ followed by 32 letters and digits, from ${KEYS_PAGE}) and restart the server.`,
-  IDEMPOTENCY_CONFLICT: "clipsdk is still working on an earlier attempt of this request. Wait a minute, then try again.",
-  INPUT_FETCH_FAILED: "clipsdk couldn't download the video. Pass a direct, public link to the file itself (not a page that plays it), or the local file path so it gets uploaded.",
-  INPUT_UNSUPPORTED: "clipsdk couldn't read the video. Re-encode it as H.264/AAC MP4 (ffmpeg -i in.mov -c:v libx264 -c:a aac out.mp4) and try again.",
+  IDEMPOTENCY_CONFLICT: "ClipSDK is still working on an earlier attempt of this request. Wait a minute, then try again.",
+  INPUT_FETCH_FAILED: "ClipSDK couldn't download the video. Pass a direct, public link to the file itself (not a page that plays it), or the local file path so it gets uploaded.",
+  INPUT_UNSUPPORTED: "ClipSDK couldn't read the video. Re-encode it as H.264/AAC MP4 (ffmpeg -i in.mov -c:v libx264 -c:a aac out.mp4) and try again.",
   INPUT_TOO_LONG: "Videos can be up to 48 hours, and the clips come from the first 3. Cut it into 3 hour parts first (ffmpeg -i in.mp4 -ss 3:00:00 -t 3:00:00 -c copy part2.mp4) and clip each part.",
   INPUT_TOO_SHORT: "The video is shorter than min_seconds. Lower min_seconds (10 at least) or use a longer video.",
   INPUT_TOO_LARGE: "The message says what's too big: over 5 GB, or too heavy to render clips this long, with the max_seconds that fits. Lower max_seconds, or re-encode the video smaller.",
-  INPUT_CHANGED: "The file behind the link changed while clipsdk was reading it. Pass the local file path (it gets uploaded) or try again once the link is stable.",
-  NO_SPEECH: "clipsdk picks moments from what people say, and it heard no speech in this video.",
+  INPUT_CHANGED: "The file behind the link changed while ClipSDK was reading it. Pass the local file path (it gets uploaded) or try again once the link is stable.",
+  NO_SPEECH: "ClipSDK picks moments from what people say, and it heard no speech in this video.",
   INSUFFICIENT_CREDIT: `The video costs more than the account's credit. Top up at ${BILLING_PAGE}, then call create_clips again.`,
   TIMEOUT: "The video took longer than its processing limit; the message says how far it got and what to change.",
-  JOB_EXPIRED: `The job ran past its 12 h limit on clipsdk's side. ${RETRY}`,
-  INTERNAL: `This failed on clipsdk's side. ${RETRY}`,
-  DOWNLOAD_TIMEOUT: "The connection stalled or was too slow. The file stays on clipsdk for 7 days: download it from its url.",
-  TOO_MANY_CLIPS: "Get this job from the clipsdk API directly for all of its links.",
-  UPLOAD_FAILED: "Uploading the file to clipsdk's storage failed. Try again.",
+  JOB_EXPIRED: `The job ran past its 12 h limit on ClipSDK's side. ${RETRY}`,
+  INTERNAL: `This failed on ClipSDK's side. ${RETRY}`,
+  DOWNLOAD_TIMEOUT: "The connection stalled or was too slow. The file stays on ClipSDK for 7 days: download it from its url.",
+  TOO_MANY_CLIPS: "Get this job from the ClipSDK API directly for all of its links.",
+  UPLOAD_FAILED: "Uploading the file to ClipSDK's storage failed. Try again.",
   UPLOAD_STALLED: "The upload stalled. Check the connection and try again.",
   UPLOAD_EXPIRED: "The upload took longer than its upload link lasts (1 h). Try again on a faster connection, or pass a direct link to the file instead.",
 };
@@ -39,7 +39,7 @@ const HINTS: Record<string, string> = {
 // These failures count against the account: 30 an hour, or too much compute spent on failures in a day, and new jobs get 429
 const COUNTED = new Set(["INPUT_FETCH_FAILED", "INPUT_UNSUPPORTED", "INPUT_TOO_LONG", "INPUT_TOO_SHORT", "INPUT_TOO_LARGE", "INPUT_CHANGED", "NO_SPEECH", "INSUFFICIENT_CREDIT", "TIMEOUT"]);
 
-const SERVER_HINT = "This failed on clipsdk's side. Try again; if it keeps failing, report the Request-Id.";
+const SERVER_HINT = "This failed on ClipSDK's side. Try again; if it keeps failing, report the Request-Id.";
 
 function hintFor(error: ApiError): string | undefined {
   if (error.code === "NOT_FOUND") {
@@ -88,7 +88,7 @@ export function linksResult(job: Job, ctx: ToolContext): CallToolResult {
 
 function clipsResult(job: Job, ctx: ToolContext, summary: string, files: SavedFile[] | undefined, extra: Record<string, unknown>): CallToolResult {
   const clips = job.result?.clips ?? [];
-  const text = clips.length === 0 ? "Done, but clipsdk found no moments in this video that work on their own as clips." : summary;
+  const text = clips.length === 0 ? "Done, but ClipSDK found no moments in this video that work on their own as clips." : summary;
   return textResult(text, {
     status: "succeeded",
     job_id: job.id,
@@ -174,10 +174,10 @@ function describeError(error: unknown): string {
   if (error instanceof ApiError) {
     const lines = [
       error.status === 0
-        ? `clipsdk-mcp refused clipsdk's answer (${error.code}): ${error.message}`
+        ? `clipsdk-mcp refused ClipSDK's answer (${error.code}): ${error.message}`
         : error.issues.length > 0
-          ? `clipsdk rejected the request (HTTP ${error.status} ${error.code}):`
-          : `clipsdk returned HTTP ${error.status} ${error.code}: ${error.message}`,
+          ? `ClipSDK rejected the request (HTTP ${error.status} ${error.code}):`
+          : `ClipSDK returned HTTP ${error.status} ${error.code}: ${error.message}`,
       ...error.issues.map((issue) => `- ${issue.path || "body"}: ${issue.message}`),
     ];
     const hint = hintFor(error);

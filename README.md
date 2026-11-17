@@ -1,6 +1,6 @@
 # clipsdk-mcp
 
-Let your coding agent cut a long video into its best short clips. A podcast, interview, webinar or stream goes in; vertical MP4s with burned-in captions come out, each with a title, a score and a ready-to-post caption. The clipping runs on [clipsdk](https://clipsdk.com) and the clips land in your project. No ffmpeg, whisper or GPU on your machine.
+Let your coding agent cut a long video into its best short clips. A podcast, interview, webinar or stream goes in; vertical MP4s with burned-in captions come out, each with a title, a score and a ready-to-post caption. The clipping runs on [ClipSDK](https://clipsdk.com) and the clips land in your project. No ffmpeg, whisper or GPU on your machine.
 
 ```text
 > cut ./episode-42.mp4 into 5 clips for TikTok
@@ -8,9 +8,9 @@ Let your coding agent cut a long video into its best short clips. A podcast, int
 > make square clips with karaoke captions from ~/Movies/keynote.mov
 ```
 
-The agent calls `create_clips`, clipsdk transcribes the video, picks the moments that stand on their own, follows the speaker and renders each clip, and the agent gets the clips back.
+The agent calls `create_clips`, ClipSDK transcribes the video, picks the moments that stand on their own, follows the speaker and renders each clip, and the agent gets the clips back.
 
-Connect it two ways, both with a clipsdk API key (`csdk_live_...`) from [clipsdk.com/dashboard/keys](https://clipsdk.com/dashboard/keys):
+Connect it two ways, both with a ClipSDK API key (`csdk_live_...`) from [clipsdk.com/dashboard/keys](https://clipsdk.com/dashboard/keys):
 
 - **Hosted**: `https://mcp.clipsdk.com/mcp`. Nothing to install. The clips come back as links.
 - **Local**: this package over stdio, with Node 20+. It uploads local files itself and saves the clips in `./clipsdk-output/<video>/`.
@@ -46,7 +46,7 @@ claude mcp add --transport http clipsdk https://mcp.clipsdk.com/mcp --header "Au
 
 ```json
 {
-  "inputs": [{ "type": "promptString", "id": "clipsdk-key", "description": "clipsdk API key", "password": true }],
+  "inputs": [{ "type": "promptString", "id": "clipsdk-key", "description": "ClipSDK API key", "password": true }],
   "servers": {
     "clipsdk": {
       "type": "http",
@@ -92,7 +92,7 @@ gemini mcp add --transport http --header "Authorization: Bearer csdk_live_xxx" c
 
 | Tool | What it does |
 | --- | --- |
-| `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a link to one video on a site clipsdk fetches (YouTube, TikTok, Twitch and more), a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
+| `create_clips` | Turns a long video into 1-20 short clips and returns their links. Takes `video_url`, a link to one video on a site ClipSDK fetches (YouTube, TikTok, Twitch and more), a direct link to the file or the `video_url` from `create_upload`, the same `clips`, `min_seconds`, `max_seconds`, `aspect`, `reframe`, `captions`, `language`, `prompt` and `webhook_url` as the local tool, plus `wait_s` (0-60 s, default 50) and `idempotency_key`. |
 | `get_job` | Waits on a job by `job_id` (and `wait_s`) and returns its clips, or why it failed. |
 | `create_upload` | Takes the file's name or local path as `filename` and its exact `size` in bytes, and returns a `video_url` plus the `curl` command that uploads the file straight to storage. A path with characters a shell could misread comes back as `YOUR_FILE` in that command, for the agent to fill in. |
 
@@ -146,7 +146,7 @@ Settings → Developer → Edit Config (`claude_desktop_config.json`). Desktop h
 
 ```json
 {
-  "inputs": [{ "type": "promptString", "id": "clipsdk-key", "description": "clipsdk API key", "password": true }],
+  "inputs": [{ "type": "promptString", "id": "clipsdk-key", "description": "ClipSDK API key", "password": true }],
   "servers": {
     "clipsdk": {
       "type": "stdio",
@@ -164,7 +164,7 @@ Settings → Cascade → MCP Servers → View raw config, then add the same `mcp
 
 ### Claude Code skill
 
-The skill in [`skills/clipsdk/SKILL.md`](skills/clipsdk/SKILL.md) tells Claude when to reach for clipsdk and how to turn "3 square clips about pricing" into tool arguments:
+The skill in [`skills/clipsdk/SKILL.md`](skills/clipsdk/SKILL.md) tells Claude when to reach for ClipSDK and how to turn "3 square clips about pricing" into tool arguments:
 
 ```bash
 mkdir -p ~/.claude/skills/clipsdk
@@ -185,7 +185,7 @@ Then ask for clips, or type `/clipsdk ./episode-42.mp4`. Put it in `.claude/skil
 
 | Parameter | Values | Default |
 | --- | --- | --- |
-| `video` | Required. A local file path, a link to one video on a site clipsdk fetches, a direct http(s) link to the file, or a `video_url` from `upload_file`. | |
+| `video` | Required. A local file path, a link to one video on a site ClipSDK fetches, a direct http(s) link to the file, or a `video_url` from `upload_file`. | |
 | `clips` | 1-20. Fewer come back when the video has fewer good moments. | `5` |
 | `min_seconds` | Shortest clip, 10-85 s. | `20` |
 | `max_seconds` | Longest clip, 15-90 s, at least `min_seconds` + 5. | `60` |
@@ -235,11 +235,11 @@ The project root is `CLAUDE_PROJECT_DIR` when Claude Code sets it, else the clie
 
 Sources up to 48 hours and 5 GB, as MP4, MOV, WebM or MKV with speech; past 3 hours, the clips come from the first 3. Per account, shared by its keys: 3 jobs running at once, 200 jobs and 20 GB of uploads per UTC day; past a limit the tool says when to try again. Clips and uploads are kept 7 days.
 
-A link is one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or points at the video file itself. clipsdk refuses other page links, like Vimeo and Instagram, and the local server refuses localhost and private addresses, non-default ports and links with a user name or password.
+A link is one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or points at the video file itself. ClipSDK refuses other page links, like Vimeo and Instagram, and the local server refuses localhost and private addresses, non-default ports and links with a user name or password.
 
 A local file is only uploaded when it starts like an MP4, MOV, WebM or MKV video. Hidden files and folders, meaning names that start with a dot (`.env`, `~/.ssh`), and paths on another machine (`\\server\share`) are refused.
 
-Up to 8 GiB of clips are saved per job. A download that sends nothing for 60 s, or runs slower than about 64 KiB/s, stops; the clip stays on clipsdk and its link is in the result. Clips are only downloaded from the API's own `/f/` links, and never saved through a link inside the project or the output folder. Node can't open or rename relative to a folder handle, so another program running as you could still swap a folder for a link between the last check and the final rename.
+Up to 8 GiB of clips are saved per job. A download that sends nothing for 60 s, or runs slower than about 64 KiB/s, stops; the clip stays on ClipSDK and its link is in the result. Clips are only downloaded from the API's own `/f/` links, and never saved through a link inside the project or the output folder. Node can't open or rename relative to a folder handle, so another program running as you could still swap a folder for a link between the last check and the final rename.
 
 ## Development
 

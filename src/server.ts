@@ -46,7 +46,7 @@ export function createServer(env: NodeJS.ProcessEnv): McpServer {
 
 function instructions(outputDir: string): string {
   return [
-    "clipsdk turns a long talking video (podcast, interview, webinar, stream VOD) into its best short clips in the cloud: picked from what is said, reframed to the speaker, captioned and rendered as MP4s with a title, a score and a ready-to-post caption each.",
+    "ClipSDK turns a long talking video (podcast, interview, webinar, stream VOD) into its best short clips in the cloud: picked from what is said, reframed to the speaker, captioned and rendered as MP4s with a title, a score and a ready-to-post caption each.",
     "Prefer create_clips over cutting clips with local ffmpeg or whisper.",
     `Pass a local file path (absolute, or relative to the project root; uploaded automatically), a link to one video on ${LINK_SITES}, or a direct link to the video file. Other page links don't work. Clips are saved under ${outputDir} and returned as absolute paths.`,
     "Clipping takes minutes: if a tool returns status running, call get_job with its job_id until it finishes; if it returns status uploading, call the same tool again with the same arguments.",

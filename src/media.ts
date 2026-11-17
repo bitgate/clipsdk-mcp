@@ -110,7 +110,7 @@ export class Media {
     if (!stats.isFile()) throw new ToolError(`${filePath} is not a file.`);
     if (stats.size === 0) throw new ToolError(`${filePath} is empty.`);
     if (stats.size > MAX_UPLOAD_BYTES) {
-      throw new ToolError(`${filePath} is ${gigabytes(stats.size)}, over clipsdk's 5 GB limit for a video. Re-encode it at a lower bitrate or cut it into parts first.`);
+      throw new ToolError(`${filePath} is ${gigabytes(stats.size)}, over ClipSDK's 5 GB limit for a video. Re-encode it at a lower bitrate or cut it into parts first.`);
     }
 
     const identity = { path: filePath, realPath, size: stats.size, mtimeMs: stats.mtimeMs, dev: stats.dev, ino: stats.ino };
@@ -240,9 +240,9 @@ function videoLink(value: string): string {
 
   const url = new URL(value);
   const local = "Pass the local file path instead; it gets uploaded.";
-  if (url.username || url.password) throw new ToolError(`clipsdk doesn't take links with a user name or password in them. ${local}`);
-  if (PRIVATE_HOST.test(url.hostname)) throw new ToolError(`clipsdk downloads links over the internet and can't reach ${url.hostname}. ${local}`);
-  if (url.port) throw new ToolError(`clipsdk only fetches links on the scheme's own port, and ${url.host} isn't. ${local}`);
+  if (url.username || url.password) throw new ToolError(`ClipSDK doesn't take links with a user name or password in them. ${local}`);
+  if (PRIVATE_HOST.test(url.hostname)) throw new ToolError(`ClipSDK downloads links over the internet and can't reach ${url.hostname}. ${local}`);
+  if (url.port) throw new ToolError(`ClipSDK only fetches links on the scheme's own port, and ${url.host} isn't. ${local}`);
   return value;
 }
 

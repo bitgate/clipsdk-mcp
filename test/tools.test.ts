@@ -211,7 +211,7 @@ describe("create_clips", () => {
     const outcome = await call(await connect(), "create_clips", { video: LINK });
 
     expect(outcome.isError).toBe(false);
-    expect(outcome.text).toMatch(/^Done, but clipsdk found no moments/);
+    expect(outcome.text).toMatch(/^Done, but ClipSDK found no moments/);
     expect(outcome.json.clips).toEqual([]);
     await expect(readdir(output())).rejects.toThrow(/ENOENT/);
   });
@@ -415,7 +415,7 @@ describe("errors", () => {
     const outcome = await call(await connect(), "create_clips", { video: "talk.mp4" });
 
     expect(outcome.isError).toBe(true);
-    expect(outcome.text).toContain("over clipsdk's 5 GB limit");
+    expect(outcome.text).toContain("over ClipSDK's 5 GB limit");
     expect(api.requests).toHaveLength(0);
   });
 
@@ -507,7 +507,7 @@ describe("what gets uploaded", () => {
 
     expect(outcome.isError).toBe(false);
     expect(outcome.json.video_url).toBe(api.tickets[0]?.video_url);
-    expect(outcome.text).toContain(`Pass this video_url to create_clips; clipsdk keeps it 7 days: ${api.tickets[0]?.video_url}`);
+    expect(outcome.text).toContain(`Pass this video_url to create_clips; ClipSDK keeps it 7 days: ${api.tickets[0]?.video_url}`);
     expect(api.uploads).toMatchObject([{ filename: "holiday.mp4", bytes: MP4.length }]);
   });
 
@@ -787,7 +787,7 @@ describe("where files are saved", () => {
 
     expect(json.clips?.[0]).toMatchObject({ video: output("talk", "01-clip.mp4"), srt: null });
     expect(json.errors?.[0]?.error).toBe(
-      "download failed: no data for 1 s\nThe connection stalled or was too slow. The file stays on clipsdk for 7 days: download it from its url.\nRequest-Id: req_stalled_file",
+      "download failed: no data for 1 s\nThe connection stalled or was too slow. The file stays on ClipSDK for 7 days: download it from its url.\nRequest-Id: req_stalled_file",
     );
   });
 
@@ -803,6 +803,6 @@ describe("where files are saved", () => {
     const { json } = outcomeOf(await runner.start({ video_url: LINK }, "talk", true, context()));
 
     expect([json.clips?.[0]?.video, json.clips?.[0]?.poster].filter(Boolean)).toHaveLength(1);
-    expect(JSON.stringify(json.errors)).toContain("more than a clipsdk job makes");
+    expect(JSON.stringify(json.errors)).toContain("more than a ClipSDK job makes");
   });
 });

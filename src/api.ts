@@ -239,7 +239,7 @@ export class ClipSdk {
     const { idleMs, bytesPerSecond } = this.#limits;
 
     let requestId: string | undefined;
-    const tooLarge = () => new ApiError(413, "OUTPUT_TOO_LARGE", `the job's files are over ${sizeOf(this.#limits.outputBytes)}, more than a clipsdk job makes`, shown, { requestId });
+    const tooLarge = () => new ApiError(413, "OUTPUT_TOO_LARGE", `the job's files are over ${sizeOf(this.#limits.outputBytes)}, more than a ClipSDK job makes`, shown, { requestId });
     const timedOut = (reason: string) => new ApiError(504, "DOWNLOAD_TIMEOUT", reason, shown, { requestId, retryable: false });
 
     const started = Date.now();

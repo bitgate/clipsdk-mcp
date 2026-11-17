@@ -1,12 +1,12 @@
 ---
 name: clipsdk
-description: Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips with burned-in captions, using the clipsdk MCP tools. Use when the user asks for clips, shorts, reels, TikToks or highlights from a video file, a video link (YouTube, TikTok, Twitch and more), or a direct link to a video file.
+description: Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips with burned-in captions, using the ClipSDK MCP tools. Use when the user asks for clips, shorts, reels, TikToks or highlights from a video file, a video link (YouTube, TikTok, Twitch and more), or a direct link to a video file.
 license: MIT
-compatibility: Needs the clipsdk MCP server, hosted (https://mcp.clipsdk.com/mcp with the key as a Bearer header) or local (npx -y github:bitgate/clipsdk-mcp, Node 20+, CLIPSDK_KEY set). Without it, falls back to the clipsdk HTTP API.
+compatibility: Needs the ClipSDK MCP server, hosted (https://mcp.clipsdk.com/mcp with the key as a Bearer header) or local (npx -y github:bitgate/clipsdk-mcp, Node 20+, CLIPSDK_KEY set). Without it, falls back to the ClipSDK HTTP API.
 allowed-tools: mcp__clipsdk__create_clips mcp__clipsdk__get_job mcp__clipsdk__upload_file mcp__clipsdk__create_upload
 ---
 
-# clipsdk
+# ClipSDK
 
 Turn one long video into ranked short clips with the `clipsdk` MCP tools: `create_clips`, `get_job`, and `upload_file` (local server) or `create_upload` (hosted server). Use them instead of cutting clips with local ffmpeg or whisper.
 

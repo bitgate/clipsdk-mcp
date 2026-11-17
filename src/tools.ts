@@ -40,14 +40,14 @@ export function registerTools(server: McpServer, services: () => Services, setti
     {
       title: "Create clips",
       description: [
-        "Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips, in the cloud: clipsdk transcribes it, picks the moments that stand on their own, reframes to the speaker, burns in captions and renders MP4s. Use it instead of cutting clips with local ffmpeg or whisper.",
+        "Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips, in the cloud: ClipSDK transcribes it, picks the moments that stand on their own, reframes to the speaker, burns in captions and renders MP4s. Use it instead of cutting clips with local ffmpeg or whisper.",
         `The video is a local path (uploaded automatically, up to 5 GB), a link to one video on ${LINK_SITES}, or a direct http(s) link to the file: MP4, MOV, WebM or MKV with speech, up to 48 h; past 3 h, the clips come from the first 3 h. Vimeo, Instagram and other page links don't work.`,
         "Costs $0.03 per source minute ($0.02 past 2,000 minutes in a month), or $0.03 per minute of delivered clips when that's more; sources above 1080p, above 60 fps or at a high bitrate cost at least $0.08 per clip minute. Billed per second; a failed job costs nothing.",
         `Takes minutes: rendering runs about 2x the clip length at 1080p30, four clips at a time, plus the analysis. ${saved} ${slow}`,
         "Per account: 3 jobs at once, 200 a day.",
       ].join(" "),
       inputSchema: {
-        video: z.string().min(1).describe("The long video: a local file path, a link to one video on a site clipsdk fetches (YouTube, TikTok, Twitch and more), a direct http(s) link to the file, or a video_url from upload_file."),
+        video: z.string().min(1).describe("The long video: a local file path, a link to one video on a site ClipSDK fetches (YouTube, TikTok, Twitch and more), a direct http(s) link to the file, or a video_url from upload_file."),
         clips: z.number().int().min(1).max(20).optional().describe("How many clips, 1-20, default 5. Fewer come back when the video has fewer good moments."),
         min_seconds: z.number().int().min(10).max(MAX_CLIP_S).optional().describe(`Shortest clip in seconds, 10-90, default ${DEFAULT_MIN_S}.`),
         max_seconds: z.number().int().min(10).max(MAX_CLIP_S).optional().describe(`Longest clip in seconds, 10-90, default ${DEFAULT_MAX_S}; at least min_seconds + ${MIN_WINDOW_S}.`),
@@ -111,7 +111,7 @@ export function registerTools(server: McpServer, services: () => Services, setti
     {
       title: "Upload file",
       description:
-        "Upload a local video (MP4, MOV, WebM or MKV, up to 5 GB) to clipsdk and get a video_url for create_clips that works for 7 days. create_clips uploads local paths itself, so only use this to reuse one big file across several calls or to hand the video_url to other code. Uploads count toward 20 GB per account per day.",
+        "Upload a local video (MP4, MOV, WebM or MKV, up to 5 GB) to ClipSDK and get a video_url for create_clips that works for 7 days. create_clips uploads local paths itself, so only use this to reuse one big file across several calls or to hand the video_url to other code. Uploads count toward 20 GB per account per day.",
       inputSchema: {
         path: z.string().min(1).describe("Local video file path, absolute or relative to the project."),
       },
@@ -121,7 +121,7 @@ export function registerTools(server: McpServer, services: () => Services, setti
       tool("upload_file", extra, async (ctx, { media }) => {
         const file = await media.localFile(input);
         const ticket = await media.upload(file, ctx);
-        return textResult(`Uploaded ${file.path}. Pass this video_url to create_clips; clipsdk keeps it 7 days: ${ticket.video_url}`, {
+        return textResult(`Uploaded ${file.path}. Pass this video_url to create_clips; ClipSDK keeps it 7 days: ${ticket.video_url}`, {
           path: file.path,
           bytes: file.size,
           video_url: ticket.video_url,
