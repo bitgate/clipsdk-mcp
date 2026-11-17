@@ -41,7 +41,7 @@ export function registerTools(server: McpServer, services: () => Services, setti
       title: "Create clips",
       description: [
         "Cut a long talking video (podcast, interview, webinar, talk, stream VOD) into its best short clips, in the cloud: clipsdk transcribes it, picks the moments that stand on their own, reframes to the speaker, burns in captions and renders MP4s. Use it instead of cutting clips with local ffmpeg or whisper.",
-        `The video is a local path (uploaded automatically, up to 5 GB), a link to one video on ${LINK_SITES}, or a direct http(s) link to the file: MP4, MOV, WebM or MKV with speech, up to 3 h. Vimeo, Instagram and other page links don't work.`,
+        `The video is a local path (uploaded automatically, up to 5 GB), a link to one video on ${LINK_SITES}, or a direct http(s) link to the file: MP4, MOV, WebM or MKV with speech, up to 48 h; past 3 h, the clips come from the first 3 h. Vimeo, Instagram and other page links don't work.`,
         "Costs $0.03 per source minute ($0.02 past 2,000 minutes in a month), or $0.03 per minute of delivered clips when that's more; sources above 1080p, above 60 fps or at a high bitrate cost at least $0.08 per clip minute. Billed per second; a failed job costs nothing.",
         `Takes minutes: rendering runs about 2x the clip length at 1080p30, four clips at a time, plus the analysis. ${saved} ${slow}`,
         "Per account: 3 jobs at once, 200 a day.",

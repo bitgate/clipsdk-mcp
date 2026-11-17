@@ -233,7 +233,7 @@ The project root is `CLAUDE_PROJECT_DIR` when Claude Code sets it, else the clie
 
 ## Limits
 
-Sources up to 3 hours and 5 GB, as MP4, MOV, WebM or MKV with speech. Per account, shared by its keys: 3 jobs running at once, 200 jobs and 20 GB of uploads per UTC day; past a limit the tool says when to try again. Clips and uploads are kept 7 days.
+Sources up to 48 hours and 5 GB, as MP4, MOV, WebM or MKV with speech; past 3 hours, the clips come from the first 3. Per account, shared by its keys: 3 jobs running at once, 200 jobs and 20 GB of uploads per UTC day; past a limit the tool says when to try again. Clips and uploads are kept 7 days.
 
 A link is one video on YouTube, TikTok, Twitch, Kick, X, Facebook, Loom, Zoom, Google Drive, Dropbox, Dailymotion, Streamable, Vidyard, Wistia or LinkedIn, or points at the video file itself. clipsdk refuses other page links, like Vimeo and Instagram, and the local server refuses localhost and private addresses, non-default ports and links with a user name or password.
 
