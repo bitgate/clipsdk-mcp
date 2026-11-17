@@ -19,7 +19,7 @@ export function loadConfig(env: NodeJS.ProcessEnv): ConfigResult {
 
   const apiKey = env.CLIPSDK_KEY?.trim() || "";
   if (!apiKey) {
-    problems.push("CLIPSDK_KEY is not set. Add your clipsdk API key (csdk_live_..., from https://clipsdk.com/dashboard/keys) to the env of this MCP server in your client config, then restart the server.");
+    problems.push("CLIPSDK_KEY is not set. Add your ClipSDK API key (csdk_live_..., from https://clipsdk.com/dashboard/keys) to the env of this MCP server in your client config, then restart the server.");
   }
 
   const rawBaseUrl = env.CLIPSDK_BASE_URL?.trim() || DEFAULT_BASE_URL;

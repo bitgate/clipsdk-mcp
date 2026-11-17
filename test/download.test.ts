@@ -221,7 +221,7 @@ describe("answers", () => {
     const error = await sdk.getJob("job_1", 0, signal()).catch((error: unknown) => error);
 
     expect(error).toMatchObject({ code: "RESPONSE_TOO_LARGE" });
-    expect(errorResult(error).content).toEqual([{ type: "text", text: "clipsdk-mcp refused clipsdk's answer (RESPONSE_TOO_LARGE): the answer is over 1 MiB" }]);
+    expect(errorResult(error).content).toEqual([{ type: "text", text: "clipsdk-mcp refused ClipSDK's answer (RESPONSE_TOO_LARGE): the answer is over 1 MiB" }]);
   });
 
   it("refuses an answer that says it's over the cap before reading it", { timeout: 3000 }, async () => {

@@ -321,7 +321,7 @@ describe("job answers", () => {
 
     expect(error).toMatchObject({ code: "TOO_MANY_CLIPS" });
     expect(textOf(error)).toBe(
-      "clipsdk-mcp refused clipsdk's answer (TOO_MANY_CLIPS): the job lists 21 clips, and clipsdk-mcp saves at most 20\nGet this job from the clipsdk API directly for all of its links.",
+      "clipsdk-mcp refused ClipSDK's answer (TOO_MANY_CLIPS): the job lists 21 clips, and clipsdk-mcp saves at most 20\nGet this job from the ClipSDK API directly for all of its links.",
     );
   });
 });
