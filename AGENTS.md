@@ -1,6 +1,8 @@
 # AGENTS.md
 
-Local stdio MCP server that wraps the clipsdk clipping API. The API contract lives in the `bitgate/clipsdk` repo (`docs/CLIPS.md`, `worker/clips/clipsdk.ts`) and at https://api.clipsdk.com/openapi.json and https://api.clipsdk.com/llms.txt.
+Local stdio MCP server that wraps the ClipSDK clipping API. The API contract lives in the `bitgate/clipsdk` repo (`docs/CLIPS.md`, `worker/clips/clipsdk.ts`) and at https://api.clipsdk.com/openapi.json and https://api.clipsdk.com/llms.txt.
+
+Write the product as ClipSDK in anything a person or an agent reads: tool text, errors, the README and SKILL.md. Lowercase `clipsdk` is only for identifiers: the server name, config keys, CLI args, and the package and skill names.
 
 ## Layout
 
